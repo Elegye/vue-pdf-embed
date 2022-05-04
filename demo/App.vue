@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-pdf-embed :source="pdfSource" />
+    <vue-pdf-embed :source="pdfSource" :disableAnnotationLayer="true" />
   </div>
 </template>
 
