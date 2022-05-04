@@ -188,14 +188,11 @@ export default {
         this.pageNums = this.page
           ? [this.page]
           : [...Array(this.document.numPages + 1).keys()].slice(1)
-        
-        let canvasContainer = []
 
         await Promise.all(
           this.pageNums.map(async (pageNum, i) => {
             const page = await this.document.getPage(pageNum)
             const [canvas, div1, div2] = this.$el.children[i].children
-            canvasContainer.push(canvas)
             const [actualWidth, actualHeight] = this.getPageDimensions(
               page.view[3] / page.view[2]
             )
@@ -224,7 +221,7 @@ export default {
           })
         )
 
-        this.$emit('rendered', canvasContainer)
+        this.$emit('rendered')
       } catch (e) {
         this.document = null
         this.pageCount = null
