@@ -92,6 +92,7 @@ export default {
 | password-requested    | callback function, retry flag | password is needed to display the document |
 | rendering-failed      | error object                  | failed to render document                  |
 | rendered              | –                             | finished rendering the document            |
+| clicked               | -                             | Parent div clicked                         |
 
 ## Examples
 

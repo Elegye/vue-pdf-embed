@@ -288,9 +288,9 @@ export default {
         }),
       }).promise
     },
-    handleClick(event){
-      this.$emit('click', event)
-    }
+    handleClick(event) {
+      this.$emit('clicked', event)
+    },
   },
 }
 </script>
