@@ -6,7 +6,7 @@
       :id="id && `${id}-${pageNum}`"
       @click="handleClick"
     >
-      <canvas />
+      <canvas :ref="`${id}-${pageNum}`" />
 
       <div v-if="!disableTextLayer" class="textLayer" />
 
