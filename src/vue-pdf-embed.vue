@@ -5,8 +5,11 @@
       :key="pageNum"
       :id="id && `${id}-${pageNum}`"
       @click="handleClick"
+      @mousedown="handleMouseDown"
+      @mouseup="handleMouseUp"
+      @mousemove="handleMouseMove"
     >
-      <canvas :ref="`${id}-${pageNum}`" />
+      <canvas :ref="`canvas-${pageNum}`" />
 
       <div v-if="!disableTextLayer" class="textLayer" />
 
@@ -290,6 +293,15 @@ export default {
     },
     handleClick(event) {
       this.$emit('clicked', event)
+    },
+    handleMouseMove(event) {
+      this.$emit('mouseMove', event)
+    },
+    handleMouseUp(event) {
+      this.$emit('mouseUp', event)
+    },
+    handleMouseDown(event) {
+      this.$emit('mouseDown', event)
     },
   },
 }
