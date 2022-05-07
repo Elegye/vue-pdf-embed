@@ -8,6 +8,7 @@ export interface VuePdfEmbedProps {
   rotation?: number | string;
   source: object | string | Uint8Array;
   width?: number | string;
+  margin?: number;
 }
 
 export interface VuePdfEmbedData {
