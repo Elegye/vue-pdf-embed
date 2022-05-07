@@ -22,6 +22,7 @@
         @mousemove="handleEvent"
         @touchstart="handleEvent"
         @touchend="handleEvent"
+        @touchmove="handleEvent"
       />
 
       <div v-if="!disableTextLayer" class="textLayer" />
