@@ -325,7 +325,7 @@ export default {
       this.$emit(
         'canvasEvent',
         event,
-        event.target.attributes.getNamedItem('page')
+        event.target.attributes.getNamedItem('page').value
       )
     },
   },
