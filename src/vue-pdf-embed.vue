@@ -4,6 +4,7 @@
       v-for="pageNum in pageNums"
       :key="pageNum"
       :id="id && `${id}-${pageNum}`"
+      style="position: relative"
     >
       <canvas
         :id="`canvas-${pageNum}`"
@@ -24,6 +25,8 @@
       <div v-if="!disableTextLayer" class="textLayer" />
 
       <div v-if="!disableAnnotationLayer" class="annotationLayer" />
+
+      <div style="clear: both"></div>
     </div>
   </div>
 </template>
@@ -90,6 +93,11 @@ export default {
      * @values Number, String
      */
     width: [Number, String],
+    /**
+     * Desired margin between pages
+     * @values Number
+     */
+    margin: Number,
   },
   data() {
     return {
@@ -218,6 +226,12 @@ export default {
               canvas.style.height = `${Math.floor(actualHeight)}px`
             }
 
+            // Set the height, width and margin of the div container
+            this.$el.children[i].style.height = `${Math.floor(actualHeight)}px`
+            this.$el.children[i].style.width = `${Math.floor(actualWidth)}px`
+            this.$el.children[i].style.margin = `${Math.floor(this.margin)}px`
+
+            // Propagate the height to the nested canvas
             draws.style.width = canvas.style.width
             draws.style.height = canvas.style.height
 
@@ -308,10 +322,11 @@ export default {
       }).promise
     },
     handleEvent(event) {
-      const target = event.target
-      const page = target.attributes.getNamedItem('page')
-      console.log(event.type)
-      this.$emit('canvasEvent', event, page, target)
+      this.$emit(
+        'canvasEvent',
+        event,
+        event.target.attributes.getNamedItem('page')
+      )
     },
   },
 }
