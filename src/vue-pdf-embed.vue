@@ -5,7 +5,21 @@
       :key="pageNum"
       :id="id && `${id}-${pageNum}`"
     >
-      <canvas :ref="`canvas-${pageNum}`" />
+      <canvas
+        :id="`canvas-${pageNum}`"
+        :ref="`canvas-${pageNum}`"
+        style="z-index: 0; position: absolute"
+      />
+      <canvas
+        :id="`canvas-${pageNum}-draws`"
+        :ref="`canvas-${pageNum}-draws`"
+        :page="`${pageNum}`"
+        style="z-index: 30; position: absolute"
+        @click="handleEvent"
+        @mousedown="handleEvent"
+        @mouseup="handleEvent"
+        @mousemove="handleEvent"
+      />
 
       <div v-if="!disableTextLayer" class="textLayer" />
 
@@ -191,7 +205,7 @@ export default {
         await Promise.all(
           this.pageNums.map(async (pageNum, i) => {
             const page = await this.document.getPage(pageNum)
-            const [canvas, div1, div2] = this.$el.children[i].children
+            const [canvas, draws, div1, div2] = this.$el.children[i].children
             const [actualWidth, actualHeight] = this.getPageDimensions(
               page.view[3] / page.view[2]
             )
@@ -204,7 +218,10 @@ export default {
               canvas.style.height = `${Math.floor(actualHeight)}px`
             }
 
-            await this.renderPage(page, canvas, actualWidth)
+            draws.style.width = canvas.style.width
+            draws.style.height = canvas.style.height
+
+            await this.renderPage(page, canvas, draws, actualWidth)
 
             if (!this.disableTextLayer) {
               await this.renderPageTextLayer(page, div1, actualWidth)
@@ -232,9 +249,10 @@ export default {
      * Renders the page content.
      * @param {PDFPageProxy} page - Page proxy.
      * @param {HTMLCanvasElement} canvas - HTML canvas.
+     * @param {HTMLCanvasElement} canvas - HTML canvas drawings.
      * @param {number} width - Actual page width.
      */
-    async renderPage(page, canvas, width) {
+    async renderPage(page, canvas, draws, width) {
       const viewport = page.getViewport({
         scale: Math.ceil(width / page.view[2]) + 1,
         rotation: this.rotation,
@@ -242,6 +260,8 @@ export default {
 
       canvas.width = viewport.width
       canvas.height = viewport.height
+      draws.width = viewport.width
+      draws.height = viewport.height
 
       await page.render({
         canvasContext: canvas.getContext('2d'),
@@ -286,6 +306,12 @@ export default {
           rotation: this.rotation,
         }),
       }).promise
+    },
+    handleEvent(event) {
+      const target = event.target
+      const page = target.attributes.getNamedItem('page')
+      console.log(event.type)
+      this.$emit('canvasEvent', event, page, target)
     },
   },
 }
