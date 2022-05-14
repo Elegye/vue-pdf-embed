@@ -1,3 +1,4 @@
+import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import { DefineComponent } from 'vue';
 
 export interface VuePdfEmbedProps {
@@ -12,7 +13,7 @@ export interface VuePdfEmbedProps {
 }
 
 export interface VuePdfEmbedData {
-  document: object | null;
+  document: PDFDocumentProxy | null;
   pageCount: number;
   pageNums: number[];
 }
